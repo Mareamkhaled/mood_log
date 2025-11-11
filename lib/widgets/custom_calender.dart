@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../core/utils/app_style.dart';
+import '../screens/analytics_screen.dart';
 import 'custom_container.dart';
 
 class CustomCalender extends StatelessWidget {
@@ -9,7 +10,6 @@ class CustomCalender extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
-      // vertical: 1,
       child: Column(
         children: [
           Row(
@@ -20,7 +20,11 @@ class CustomCalender extends StatelessWidget {
                   "View Analytics",
                   style: AppStyle.lemon20sPurple500.copyWith(fontSize: 15),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const AnalyticsScreen();
+                  },));
+                },
               ),
             ],
           ),
