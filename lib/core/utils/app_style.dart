@@ -1,0 +1,27 @@
+import 'package:flutter/material.dart';
+
+import 'app_colors.dart';
+
+class AppStyle{
+  static TextStyle lemon20sPurple500 = const TextStyle(
+    fontFamily: 'Lemon',
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: AppColors.myDarkPurple
+  );
+
+
+  static TextStyle lemon15sPurple400 = const TextStyle(
+    fontFamily: 'Lemon',
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: AppColors.myGrey
+  );
+
+
+  
+
+
+
+
+}

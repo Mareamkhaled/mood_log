@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
+import '../core/utils/app_colors.dart';
+import '../core/utils/app_style.dart';
 import 'custom_container.dart';
 
 class EntriesSection extends StatelessWidget {
@@ -14,11 +16,10 @@ class EntriesSection extends StatelessWidget {
                     children: [
                       Text(
                         "Recent Entries",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[800],
-                        ),
+                        style: AppStyle.lemon20sPurple500.copyWith(
+                          color: AppColors.myBlack,
+                          // fontWeight: FontWeight.bold
+                        )
                       ),
                       // const Gap(5),
                       
@@ -38,8 +39,7 @@ class EntriesSection extends StatelessWidget {
                           
                           return InkWell(
                             onTap: () {
-                              // TODO: Navigate to entry detail
-                              print('Tapped entry: ${entry['mood']}');
+                              //!Navigate to entry screen
                             },
                             borderRadius: BorderRadius.circular(12),
                             child: Padding(
