@@ -11,7 +11,7 @@ class AppStyle{
   );
 
 
-  static TextStyle lemon15sPurple400 = const TextStyle(
+  static TextStyle lemon15sGrey400 = const TextStyle(
     fontFamily: 'Lemon',
     fontSize: 12,
     fontWeight: FontWeight.w400,

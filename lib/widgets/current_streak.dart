@@ -15,9 +15,9 @@ class CurrentStreak extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text("Current Streak", style: AppStyle.lemon15sPurple400),
+              Text("Current Streak", style: AppStyle.lemon15sGrey400),
               const Spacer(),
-              Text("Total Entries", style: AppStyle.lemon15sPurple400),
+              Text("Total Entries", style: AppStyle.lemon15sGrey400),
             ],
           ),
           const Gap(10),

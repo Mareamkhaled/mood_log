@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       
-      floatingActionButton: customFloatingButton()
+      floatingActionButton: const CustomFloatingButton()
     );
   }
 }
