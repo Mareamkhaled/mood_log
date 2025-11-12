@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 
-void main() {
+void main() async{
   runApp( DevicePreview(
     enabled: !kReleaseMode,
     builder: (context) => const MyApp(), 
