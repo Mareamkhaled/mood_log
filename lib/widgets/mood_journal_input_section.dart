@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import '../core/utils/app_colors.dart';
 import '../cubit/analyze_cubit.dart';
+import '../screens/result_screen.dart';
 
 class MoodJournalInputSection extends StatefulWidget {
   const MoodJournalInputSection({super.key});
@@ -15,13 +15,6 @@ class MoodJournalInputSection extends StatefulWidget {
 
 class _MoodJournalInputSectionState extends State<MoodJournalInputSection> {
   final TextEditingController textController = TextEditingController();
-
-  // @override
-  // void initState() {
-  //   context.read<AnalyzeCubit>().getSentiment({"inputs": textController.text});
-  //   super.initState();
-  // }
-
   @override
   void dispose() {
     textController.dispose();
@@ -56,23 +49,32 @@ class _MoodJournalInputSectionState extends State<MoodJournalInputSection> {
             textAlignVertical: TextAlignVertical.top,
           ),
         ),
-    
+
         const Gap(16),
-    
+
         Divider(color: Colors.grey[200], thickness: 1),
-    
+
         const Gap(16),
-    
+
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ElevatedButton.icon(
-              onPressed: () {
-               var response = context.read<AnalyzeCubit>().getSentiment({
-                  "inputs": textController.text,
-                });
-                print(response);
-    
+              onPressed: () async {
+                final response = await context
+                    .read<AnalyzeCubit>()
+                    .getSentiment({"inputs": textController.text});
+                final res = response[0];
+                if (!context.mounted) return;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    settings: RouteSettings(arguments: res),
+                    builder: (context) {
+                      return const ResultScreen();
+                    },
+                  ),
+                );
               },
               icon: const Icon(Icons.save, color: Colors.white, size: 20),
               label: const Text(

@@ -10,13 +10,15 @@ class AnalyzeCubit extends Cubit<AnalyzeState> {
   AnalyzeCubit({required this.webService}) : super(AnalyzeLoading());
   WebService webService;
 
-  Future<void> getSentiment(Map<String, dynamic> sentiment) async {
+  Future<List<AnalyzeModel>> getSentiment(Map<String, dynamic> sentiment) async {
     emit(AnalyzeLoading());
     try {
       final response = await webService.postSentiment(sentiment);
       emit(AnalyzeLoaded(response));
+      return response;
     } catch (e) {
       emit(CubitError(e.toString()));
+      return [];
     }
   }
 }
