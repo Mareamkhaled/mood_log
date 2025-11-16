@@ -4,6 +4,10 @@ abstract class AnalyzeState extends Equatable {
   const AnalyzeState();
 }
 
+class AnalyzeInitial extends AnalyzeState {
+  @override
+  List<Object> get props => [];
+}
 class AnalyzeLoading extends AnalyzeState {
   @override
   List<Object> get props => [];
@@ -16,9 +20,9 @@ class AnalyzeLoaded extends AnalyzeState {
   List<Object> get props => [analyzeList];
 }
 
-class CubitError extends AnalyzeState {
+class AnalyzeFailure extends AnalyzeState {
   final String message;
-  const CubitError(this.message);
+  const AnalyzeFailure(this.message);
   @override
   List<Object> get props => [message];
 }

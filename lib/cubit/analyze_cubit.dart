@@ -7,7 +7,7 @@ import '../service/web_service.dart';
 part 'analyze_state.dart';
 
 class AnalyzeCubit extends Cubit<AnalyzeState> {
-  AnalyzeCubit({required this.webService}) : super(AnalyzeLoading());
+  AnalyzeCubit({required this.webService}) : super(AnalyzeInitial());
   WebService webService;
 
   Future<List<AnalyzeModel>> getSentiment(Map<String, dynamic> sentiment) async {
@@ -17,7 +17,7 @@ class AnalyzeCubit extends Cubit<AnalyzeState> {
       emit(AnalyzeLoaded(response));
       return response;
     } catch (e) {
-      emit(CubitError(e.toString()));
+      emit(AnalyzeFailure(e.toString()));
       return [];
     }
   }
