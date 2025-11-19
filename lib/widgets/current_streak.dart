@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../core/utils/app_colors.dart';
 import '../core/utils/app_style.dart';
+import '../cubit/journal_cubit.dart';
 import 'custom_container.dart';
 
 class CurrentStreak extends StatelessWidget {
@@ -23,10 +25,13 @@ class CurrentStreak extends StatelessWidget {
           const Gap(10),
           Row(
             children: [
-              Text("7 days 🔥", style: AppStyle.lemon20sPurple500),
+              Text("${ BlocProvider.of<JournalCubit>(
+                      context,
+                      listen: true,
+                    ).calcStreakDays()}", style: AppStyle.lemon20sPurple500),
               const Spacer(),
               Text(
-                "23",
+                "${ BlocProvider.of<JournalCubit>(context, listen: false,).getAllEntries()}",
                 style: AppStyle.lemon20sPurple500.copyWith(
                   color: AppColors.myBlue,
                 ),

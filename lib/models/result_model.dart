@@ -29,6 +29,7 @@ class ResultModel extends Equatable {
       'mood': mood,
       'score': score,
       'emoji': emoji,
+      // ignore: deprecated_member_use
       'color': color.value,
       'date': date.toIso8601String(),
     };

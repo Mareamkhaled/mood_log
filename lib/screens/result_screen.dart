@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/app_style.dart';
+import '../cubit/journal_cubit.dart';
 import '../models/result_model.dart';
 import '../widgets/cutom_shadow.dart';
+
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({
-    super.key, });
+  const ResultScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final response = ModalRoute.of(context)!.settings.arguments as  ResultModel;
+    ResultModel response =
+        ModalRoute.of(context)!.settings.arguments as ResultModel;
     return Scaffold(
       body: Container(
-         decoration: const BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,  
-            end: Alignment.bottomRight, 
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [AppColors.primaryColor, AppColors.secondaryColor],
           ),
         ),
@@ -34,41 +37,43 @@ class ResultScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: AppColors.myWhite,
                     borderRadius: BorderRadius.circular(32),
-                    boxShadow: [
-                      customShadow()
-                    ],
+                    boxShadow: [customShadow()],
                   ),
                   child: Column(
                     children: [
                       Center(
                         child: Text(
-                          response.emoji,                          
+                          response.emoji,
                           style: const TextStyle(fontSize: 70),
                         ),
                       ),
-                
+
                       const Gap(20),
 
-                       Text(
-                        'Entry Saved!',
-                        style: AppStyle.lemon20sPurple500.copyWith(
-                          color: AppColors.myBlack,
-                          // fontSize: 20
-                        )
+                      GestureDetector(
+                        onTap: () {
+                          context.read<JournalCubit>().addEntry(response);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('✅ Entry saved')),
+                          );
+                        },
+                        child: Text(
+                          "Save Entry",
+                          style: AppStyle.lemon15sGrey400.copyWith(
+                            color: AppColors.myBlack,
+                          ),
+                        ),
                       ),
-                
+
                       const Gap(8),
-                
-                      // Subtitle
+
                       Text(
                         'We detected your mood',
-                        style:AppStyle.lemon15sGrey400.copyWith(
-                          fontSize: 17
-                        )
+                        style: AppStyle.lemon15sGrey400.copyWith(fontSize: 17),
                       ),
-                
+
                       const Gap(24),
-                
+
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 32,
@@ -86,21 +91,19 @@ class ResultScreen extends StatelessWidget {
                           children: [
                             Text(
                               response.mood,
-                              style:AppStyle.lemon15sGrey400.copyWith(
+                              style: AppStyle.lemon15sGrey400.copyWith(
                                 color: AppColors.myBlack,
                                 fontSize: 24,
-                                fontWeight: FontWeight.bold
-                              )
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                
+
                             const Gap(8),
-                
-                            // Confidence
                             Text(
                               '${(response.score * 100).toStringAsFixed(0)}% confidence',
                               style: AppStyle.lemon15sGrey400.copyWith(
-                                color: AppColors.myBlack
-                              )
+                                color: AppColors.myBlack,
+                              ),
                             ),
                           ],
                         ),
@@ -129,11 +132,11 @@ class ResultScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(16),
                           ),
                           elevation: 4,
-                          shadowColor: Colors.black.withValues(alpha:0.2),
+                          shadowColor: Colors.black.withValues(alpha: 0.2),
                         ),
-                        child:  Text(
+                        child: Text(
                           'View Calendar',
-                          style: AppStyle.lemon20sPurple500
+                          style: AppStyle.lemon20sPurple500,
                         ),
                       ),
                     ),
@@ -155,11 +158,11 @@ class ResultScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(16),
                           ),
                         ),
-                        child:  Text(
+                        child: Text(
                           'Write Another Entry',
                           style: AppStyle.lemon20sPurple500.copyWith(
-                            fontSize: 18
-                          )
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),

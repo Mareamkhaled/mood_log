@@ -13,7 +13,6 @@ class WriteEntryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final now = DateTime.now();
     final formattedDate = DateFormat('MMMM d, yyyy').format(now);
-
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -30,7 +29,6 @@ class WriteEntryScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
                   children: [
-                    // Back button
                     IconButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -54,9 +52,7 @@ class WriteEntryScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-    
-                    // Empty space for symmetry
-                    const SizedBox(width: 48),
+                        const SizedBox(width: 48),
                   ],
                 ),
               ),

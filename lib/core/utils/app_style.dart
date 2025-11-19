@@ -23,4 +23,11 @@ class AppStyle {
     color: AppColors.myWhite,
     fontWeight: FontWeight.w500,
   );
+
+  static TextStyle entryDeatilsStyle = const TextStyle(
+    fontFamily: "Lemon",
+    fontSize: 24,
+    color: AppColors.myBlack,
+    fontWeight: FontWeight.w500,
+  );
 }
