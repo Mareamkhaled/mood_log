@@ -17,8 +17,8 @@ class HomeScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,  
-            end: Alignment.bottomRight, 
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [AppColors.primaryColor, AppColors.secondaryColor],
           ),
         ),
@@ -33,15 +33,15 @@ class HomeScreen extends StatelessWidget {
                 const Gap(20),
                 const CustomCalender(),
                 const Gap(20),
-              const EntriesSection(),
-                const Gap(80), 
+                const EntriesSection(),
+                const Gap(80),
               ],
             ),
           ),
         ),
       ),
-      
-      floatingActionButton: const CustomFloatingButton()
+    
+      floatingActionButton: const CustomFloatingButton(),
     );
   }
 }

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<AnalyzeCubit>(),
-      child: MaterialApp(
+      child:  MaterialApp(
         debugShowCheckedModeBanner: false,
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
@@ -30,7 +30,4 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// WidgetsFlutterBinding.ensureInitialized();
-//  HydratedBloc.storage = await HydratedStorage.build(
-//     storageDirectory: HydratedStorageDirectory((await getTemporaryDirectory()).path),
-//   );
+

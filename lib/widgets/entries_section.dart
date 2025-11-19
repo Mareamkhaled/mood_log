@@ -25,9 +25,9 @@ class EntriesSection extends StatelessWidget {
                       
                       ListView.separated(
                         shrinkWrap: true, 
-                        physics: const NeverScrollableScrollPhysics(), // ADDED: Let parent handle scroll
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: 3,
-                        separatorBuilder: (context, index) => const Gap(12), // ADDED: Space between items
+                        separatorBuilder: (context, index) => const Gap(12),
                         itemBuilder: (context, index) {
                           final entries = [
                             {'emoji': '😊', 'mood': 'Happy', 'date': 'Jan 9'},
