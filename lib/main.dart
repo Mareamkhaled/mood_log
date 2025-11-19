@@ -7,7 +7,7 @@ import 'cubit/analyze_cubit.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
-  setup();
+ setup();
   runApp(
     DevicePreview(enabled: !kReleaseMode, builder: (context) => const MyApp()),
   );
@@ -29,3 +29,8 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// WidgetsFlutterBinding.ensureInitialized();
+//  HydratedBloc.storage = await HydratedStorage.build(
+//     storageDirectory: HydratedStorageDirectory((await getTemporaryDirectory()).path),
+//   );

@@ -8,24 +8,29 @@ class AnalyzeRepo implements WebService {
   Dio dio;
   AnalyzeRepo({required this.dio});
   @override
-  Future<List<AnalyzeModel>> postSentiment(
-    Map<String, dynamic> sentiment,
-  ) async {
+  Future<AnalyzeModel> postSentiment(Map<String, dynamic> sentiment) async {
     try {
       final response = await dio.post(
         "j-hartmann/emotion-english-distilroberta-base",
         data: sentiment,
       );
 
-      final List<dynamic> data = response.data[0];
+      // final AnalyzeModel data = response.data[0][0];
 
-      final List<AnalyzeModel> emotions = data
-          .map((e) => AnalyzeModel.fromJson(e as Map<String, dynamic>))
-          .toList();
-      return emotions;
+      //  data
+      //     .map((e) => AnalyzeModel.fromJson(e as Map<String, dynamic>))
+      //     .toList();
+      // return data;
+      // Extract the first map
+      final firstItem = response.data[0][0] as Map<String, dynamic>;
+
+      // Convert to model
+      final AnalyzeModel data = AnalyzeModel.fromJson(firstItem);
+
+      return data;
     } catch (e) {
       debugPrint(e.toString());
-      return [];
+      return const AnalyzeModel(label: "none", score: 0.0);
     }
   }
 }

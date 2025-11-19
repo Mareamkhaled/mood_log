@@ -30,7 +30,7 @@ class _MoodJournalInputSectionState extends State<MoodJournalInputSection> {
           Navigator.push(
             context,
             MaterialPageRoute(
-          settings: RouteSettings(arguments: state.analyzeList[0]),
+          settings: RouteSettings(arguments: state.analyzeList),
 
               builder: (context) =>const ResultScreen(
               

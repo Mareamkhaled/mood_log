@@ -125,7 +125,7 @@ Widget buildMoodTrendCard() {
                     dotData: const FlDotData(show: false),
                     belowBarData: BarAreaData(
                       show: true,
-                      color: AppColors.primaryColor.withOpacity(0.1),
+                      color: AppColors.primaryColor.withValues(alpha:0.1),
                     ),
                   ),
                 ],

@@ -14,7 +14,7 @@ class AnalyzeLoading extends AnalyzeState {
 }
 
 class AnalyzeLoaded extends AnalyzeState {
-  final List<AnalyzeModel> analyzeList;
+  final ResultModel analyzeList;
   const AnalyzeLoaded(this.analyzeList);
   @override
   List<Object> get props => [analyzeList];

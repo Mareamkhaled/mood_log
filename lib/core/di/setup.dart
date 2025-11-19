@@ -19,7 +19,7 @@ Dio setupDio() {
     BaseOptions(baseUrl: 'https://router.huggingface.co/hf-inference/models/'),
   );
   dio.options.headers = {
-    "Authorization": "Bearer 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",
+    "Authorization": "Bearer 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",
     "Content-Type": "application/json",
   };
   dio.interceptors.add(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/app_style.dart';
-import '../models/analyze_model.dart';
 import '../models/result_model.dart';
 import '../widgets/cutom_shadow.dart';
 class ResultScreen extends StatelessWidget {
@@ -11,8 +10,7 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AnalyzeModel response = ModalRoute.of(context)!.settings.arguments as  AnalyzeModel;
-    final result = ResultModel.result[response.label];
+    final response = ModalRoute.of(context)!.settings.arguments as  ResultModel;
     return Scaffold(
       body: Container(
          decoration: const BoxDecoration(
@@ -44,7 +42,7 @@ class ResultScreen extends StatelessWidget {
                     children: [
                       Center(
                         child: Text(
-                          result["emoji"],
+                          response.emoji,                          
                           style: const TextStyle(fontSize: 70),
                         ),
                       ),
@@ -77,7 +75,7 @@ class ResultScreen extends StatelessWidget {
                           vertical: 20,
                         ),
                         decoration: BoxDecoration(
-                          color: result["color"],
+                          color: response.color,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
                             color: AppColors.primaryColor,
@@ -86,9 +84,8 @@ class ResultScreen extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            // Mood name
                             Text(
-                              response.label,
+                              response.mood,
                               style:AppStyle.lemon15sGrey400.copyWith(
                                 color: AppColors.myBlack,
                                 fontSize: 24,
