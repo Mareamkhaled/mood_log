@@ -3,10 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import '../core/utils/app_colors.dart';
 import '../cubit/analyze_cubit.dart';
+import '../cubit/journal_cubit.dart';
+import '../models/result_model.dart';
 import '../screens/result_screen.dart';
 
 class MoodJournalInputSection extends StatefulWidget {
-  const MoodJournalInputSection({super.key});
+  final ResultModel? entryToEdit;
+  final bool isEditing;
+
+  const MoodJournalInputSection({
+    super.key,
+    this.entryToEdit,
+    this.isEditing = false,
+  });
 
   @override
   State<MoodJournalInputSection> createState() =>
@@ -14,7 +23,16 @@ class MoodJournalInputSection extends StatefulWidget {
 }
 
 class _MoodJournalInputSectionState extends State<MoodJournalInputSection> {
-  final TextEditingController textController = TextEditingController();
+  late final TextEditingController textController;
+
+  @override
+  void initState() {
+    super.initState();
+    textController = TextEditingController();
+    if (widget.isEditing && widget.entryToEdit != null) {
+      textController.text = widget.entryToEdit!.text;
+    }
+  }
 
   @override
   void dispose() {
@@ -27,16 +45,49 @@ class _MoodJournalInputSectionState extends State<MoodJournalInputSection> {
     return BlocListener<AnalyzeCubit, AnalyzeState>(
       listener: (context, state) {
         if (state is AnalyzeLoaded) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-          settings: RouteSettings(arguments: state.analyzeList),
+          final resultModel = state.analyzeList;
 
-              builder: (context) =>const ResultScreen(
-              
+          if (widget.isEditing && widget.entryToEdit != null) {
+            final updatedEntry = ResultModel(
+              id: widget.entryToEdit!.id,
+              text: textController.text,
+              mood: resultModel.mood,
+              score: resultModel.score,
+              emoji: resultModel.emoji,
+              color: resultModel.color,
+              date: widget.entryToEdit!.date,
+            );
+
+            context.read<JournalCubit>().updateEntry(updatedEntry);
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ResultScreen(),
+                settings: RouteSettings(arguments: updatedEntry),
               ),
-            ),
-          );
+            );
+          } else {
+            final newEntry = ResultModel(
+              id: DateTime.now().millisecondsSinceEpoch.toString(),
+              text: textController.text,
+              mood: resultModel.mood,
+              score: resultModel.score,
+              emoji: resultModel.emoji,
+              color: resultModel.color,
+              date: DateTime.now(),
+            );
+
+            context.read<JournalCubit>().addEntry(newEntry);
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ResultScreen(),
+                settings: RouteSettings(arguments: newEntry),
+              ),
+            );
+          }
         }
 
         if (state is AnalyzeFailure) {
@@ -81,7 +132,6 @@ class _MoodJournalInputSectionState extends State<MoodJournalInputSection> {
           Divider(color: Colors.grey[200], thickness: 1),
 
           const Gap(16),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -91,12 +141,14 @@ class _MoodJournalInputSectionState extends State<MoodJournalInputSection> {
 
                   return ElevatedButton.icon(
                     onPressed: isLoading
-                        ? null 
+                        ? null
                         : () async {
                             if (textController.text.trim().isEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Please write something to analyze'),
+                                  content: Text(
+                                    'Please write something before saving',
+                                  ),
                                   backgroundColor: Colors.red,
                                   behavior: SnackBarBehavior.floating,
                                 ),
@@ -107,18 +159,24 @@ class _MoodJournalInputSectionState extends State<MoodJournalInputSection> {
                               "inputs": textController.text,
                             });
                           },
-                       icon: isLoading
+                    icon: isLoading
                         ? const SizedBox(
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
                             ),
                           )
                         : const Icon(Icons.save, color: Colors.white, size: 20),
                     label: Text(
-                      isLoading ? 'Analyzing...' : 'Save & Analyze',
+                      isLoading
+                          ? 'Analyzing...'
+                          : widget.isEditing
+                          ? 'Update Entry'
+                          : 'Save & Analyze',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -127,7 +185,7 @@ class _MoodJournalInputSectionState extends State<MoodJournalInputSection> {
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isLoading
-                          ? AppColors.myLightPurple.withValues(alpha:0.7)
+                          ? AppColors.myLightPurple.withValues(alpha: 0.7)
                           : AppColors.myLightPurple,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
@@ -137,8 +195,11 @@ class _MoodJournalInputSectionState extends State<MoodJournalInputSection> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       elevation: isLoading ? 0 : 4,
-                      shadowColor: AppColors.primaryColor.withValues(alpha: 0.4),
-                      disabledBackgroundColor: AppColors.myLightPurple.withValues(alpha:0.7),
+                      shadowColor: AppColors.primaryColor.withValues(
+                        alpha: 0.4,
+                      ),
+                      disabledBackgroundColor: AppColors.myLightPurple
+                          .withValues(alpha: 0.7),
                     ),
                   );
                 },

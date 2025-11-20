@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/app_style.dart';
-import '../cubit/journal_cubit.dart';
 import '../models/result_model.dart';
 import '../widgets/cutom_shadow.dart';
 
@@ -50,18 +48,10 @@ class ResultScreen extends StatelessWidget {
 
                       const Gap(20),
 
-                      GestureDetector(
-                        onTap: () {
-                          context.read<JournalCubit>().addEntry(response);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('✅ Entry saved')),
-                          );
-                        },
-                        child: Text(
-                          "Save Entry",
-                          style: AppStyle.lemon15sGrey400.copyWith(
-                            color: AppColors.myBlack,
-                          ),
+                      Text(
+                        "Save Entry",
+                        style: AppStyle.lemon15sGrey400.copyWith(
+                          color: AppColors.myBlack,
                         ),
                       ),
 
@@ -147,7 +137,6 @@ class ResultScreen extends StatelessWidget {
                       width: double.infinity,
                       child: OutlinedButton(
                         onPressed: () {
-                          // Go back to write screen
                           Navigator.pop(context);
                         },
                         style: OutlinedButton.styleFrom(

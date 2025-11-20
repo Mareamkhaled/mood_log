@@ -9,6 +9,7 @@ import '../cubit/journal_cubit.dart';
 import '../models/result_model.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/cutom_shadow.dart';
+import 'write_entry_screen.dart';
 
 class EntryDetails extends StatelessWidget {
   const EntryDetails({super.key});
@@ -93,7 +94,13 @@ class EntryDetails extends StatelessWidget {
                   text: "Edit Entry",
                   color: AppColors.myDarkPurple,
                   onPressed: () {
-                  //todo navigate to write entry screen
+                    Navigator.push(context, MaterialPageRoute(
+                      settings: RouteSettings(arguments: response),
+                      builder: (context) {
+                      return const WriteEntryScreen(
+                        
+                      );
+                    }));
                   },
                 ),
                 const Gap(15),

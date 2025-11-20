@@ -12,14 +12,6 @@ class AnalyzeLoading extends AnalyzeState {
   @override
   List<Object> get props => [];
 }
-// class AddSavedEntry extends AnalyzeState {
-//   final ResultModel resultModel;
-//   const AddSavedEntry(this.resultModel);
-//   @override
-//   List<Object> get props => [];
-  
-// }
-
 class AnalyzeLoaded extends AnalyzeState {
   final ResultModel analyzeList;
   const AnalyzeLoaded(this.analyzeList);

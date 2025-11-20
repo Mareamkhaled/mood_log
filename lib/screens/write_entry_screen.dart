@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/app_style.dart';
+import '../models/result_model.dart';
 import '../widgets/cutom_shadow.dart';
 import '../widgets/mood_journal_input_section.dart';
 
@@ -11,8 +12,13 @@ class WriteEntryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-    final formattedDate = DateFormat('MMMM d, yyyy').format(now);
+   
+      final args = ModalRoute.of(context)?.settings.arguments;
+    final isEditing = args is ResultModel;
+    final entryToEdit = isEditing ? args: null;
+    final formattedDate = isEditing && entryToEdit != null
+        ? DateFormat('MMMM d, yyyy').format(entryToEdit.date)
+        : DateFormat('MMMM d, yyyy').format(DateTime.now());
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -43,7 +49,7 @@ class WriteEntryScreen extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          Text('Today', style: AppStyle.lemon20sPurple500),
+                          Text(isEditing ? 'Edit Entry' : 'Today', style: AppStyle.lemon20sPurple500),
                           const Gap(2),
                           Text(
                             formattedDate,
@@ -66,7 +72,10 @@ class WriteEntryScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [customShadow()],
                   ),
-                  child: const MoodJournalInputSection(),
+                  child: MoodJournalInputSection(
+                    isEditing: isEditing,
+                    entryToEdit: entryToEdit,
+                  ),
                 ),
               ),
             ],
