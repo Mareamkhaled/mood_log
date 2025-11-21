@@ -46,7 +46,7 @@ class JournalCubit extends HydratedCubit<JournalState> {
     }
     return [];
   }
-  getAllEntries(){
+  getAllEntriesLength(){
     if (state is JournalLoaded) {
       final entries = (state as JournalLoaded).journalList;
       return entries.length;

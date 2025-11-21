@@ -31,7 +31,7 @@ class CurrentStreak extends StatelessWidget {
                     ).calcStreakDays()}", style: AppStyle.lemon20sPurple500),
               const Spacer(),
               Text(
-                "${ BlocProvider.of<JournalCubit>(context, listen: false,).getAllEntries()}",
+                "${ BlocProvider.of<JournalCubit>(context, listen: false,).getAllEntriesLength()}",
                 style: AppStyle.lemon20sPurple500.copyWith(
                   color: AppColors.myBlue,
                 ),
