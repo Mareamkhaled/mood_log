@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-
 import '../models/result_model.dart';
-
 part 'journal_state.dart';
 
 class JournalCubit extends HydratedCubit<JournalState> {
@@ -37,33 +34,27 @@ class JournalCubit extends HydratedCubit<JournalState> {
       emit(JournalLoaded(journal));
     }
   }
-  Map<DateTime, ResultModel> getEntriesMap() {
-  if (state is JournalLoaded) {
-    final entries = (state as JournalLoaded).journalList;
-        final entriesMap = <DateTime, ResultModel>{};
-    
-    // Loop through all entries
-    for (var entry in entries) {
-      // Convert date to just date (no time)
-      final dateKey = DateTime(
-        entry.date.year,
-        entry.date.month,
-        entry.date.day,
-      );
-      
-      // Add to map
-      entriesMap[dateKey] = entry;
 
-     debugPrint(
-      'Date: $dateKey, Entry: ${entry.text}, Mood: ${entry.mood}, Score: ${entry.score}, Emoji: ${entry.emoji}, Color: ${entry.color}, Date: ${entry.date}',
-     ); 
+  Map<DateTime, ResultModel> getEntriesMap() {
+    if (state is JournalLoaded) {
+      final entries = (state as JournalLoaded).journalList;
+      final entriesMap = <DateTime, ResultModel>{};
+
+      for (var entry in entries) {
+        final dateKey = DateTime(
+          entry.date.year,
+          entry.date.month,
+          entry.date.day,
+        );
+
+        entriesMap[dateKey] = entry;
+      }
+
+      return entriesMap;
     }
-    
-    return entriesMap;
+
+    return {};
   }
-  
-  return {};  // Return empty if no data
-}
 
   getRecentEntries(int count) {
     if (state is JournalLoaded) {
@@ -74,41 +65,44 @@ class JournalCubit extends HydratedCubit<JournalState> {
     }
     return [];
   }
-  getAllEntriesLength(){
+
+  getAllEntriesLength() {
     if (state is JournalLoaded) {
       final entries = (state as JournalLoaded).journalList;
       return entries.length;
     }
     return [];
   }
- int calcStreakDays() {
-  if (state is! JournalLoaded) return 0;
 
-  final entries = (state as JournalLoaded).journalList;
+  int calcStreakDays() {
+    if (state is! JournalLoaded) return 0;
 
-  final uniqueDates = entries
-      .map((e) => DateTime(e.date.year, e.date.month, e.date.day))
-      .toSet()
-      .toList()
-    ..sort((a, b) => b.compareTo(a)); 
+    final entries = (state as JournalLoaded).journalList;
 
-  if (uniqueDates.isEmpty) return 0;
+    final uniqueDates =
+        entries
+            .map((e) => DateTime(e.date.year, e.date.month, e.date.day))
+            .toSet()
+            .toList()
+          ..sort((a, b) => b.compareTo(a));
 
-  int streak = 1;
-  DateTime current = uniqueDates.first;
+    if (uniqueDates.isEmpty) return 0;
 
-  for (int i = 1; i < uniqueDates.length; i++) {
-    final expected = current.subtract(const Duration(days: 1));
-    if (uniqueDates[i] == expected) {
-      streak++;
-      current = uniqueDates[i];
-    } else {
-      break;
+    int streak = 1;
+    DateTime current = uniqueDates.first;
+
+    for (int i = 1; i < uniqueDates.length; i++) {
+      final expected = current.subtract(const Duration(days: 1));
+      if (uniqueDates[i] == expected) {
+        streak++;
+        current = uniqueDates[i];
+      } else {
+        break;
+      }
     }
-  }
 
-  return streak;
-}
+    return streak;
+  }
 
   @override
   JournalState? fromJson(Map<String, dynamic> json) {
