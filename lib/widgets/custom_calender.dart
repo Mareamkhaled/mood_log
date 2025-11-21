@@ -1,7 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../core/utils/app_style.dart';
+import '../cubit/journal_cubit.dart';
 import '../screens/analytics_screen.dart';
 import 'custom_container.dart';
 
@@ -13,12 +16,11 @@ class CustomCalender extends StatefulWidget {
 }
 
 class _CustomCalenderState extends State<CustomCalender> {
-      CalendarFormat _calendarFormat = CalendarFormat.month;
-DateTime _focusedDay = DateTime.now();
-DateTime? _selectedDay;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
   @override
   Widget build(BuildContext context) {
-   
     return CustomContainer(
       child: Column(
         children: [
@@ -31,39 +33,71 @@ DateTime? _selectedDay;
                   style: AppStyle.lemon20sPurple500.copyWith(fontSize: 15),
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const AnalyticsScreen();
-                  },));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const AnalyticsScreen();
+                      },
+                    ),
+                  );
                 },
               ),
             ],
           ),
 
-        TableCalendar(
-  firstDay: DateTime.utc(2020, 1, 1),
-  lastDay: DateTime.utc(2030, 12, 31),
-  focusedDay: _focusedDay,
-  calendarFormat: _calendarFormat,
-  onFormatChanged: (format) {
-    setState(() {
-      _calendarFormat = format;
-    });
-  },
-  onPageChanged: (focusedDay) {
-    _focusedDay = focusedDay;
-  },
-  onDaySelected: (selectedDay, focusedDay) {
-    setState(() {
-      _selectedDay = selectedDay;
-      _focusedDay = focusedDay;
-    });
-  },
-    
-  selectedDayPredicate: (day) {
-    return isSameDay(day, _selectedDay);
-  },
-)
+          TableCalendar(
+            firstDay: DateTime.utc(2020, 1, 1),
+            lastDay: DateTime.utc(2030, 12, 31),
+            focusedDay: _focusedDay,
+            calendarFormat: _calendarFormat,
+            onFormatChanged: (format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            },
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay;
+              });
+            },
 
+            selectedDayPredicate: (day) {
+              return isSameDay(day, _selectedDay);
+            },
+            calendarBuilders: CalendarBuilders(
+              defaultBuilder: (context, day, focusedDay) {
+                final entriesMap = BlocProvider.of<JournalCubit>(
+                  context,
+                ).getEntriesMap();
+
+                final entry = entriesMap.entries
+                    .firstWhereOrNull((e) => isSameDay(e.key, day))
+                    ?.value;
+
+                if (entry != null) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: entry.color, width: 2),
+                    ),
+                    child: Center(
+                      child: Text(
+                        entry.emoji,
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  );
+                }
+
+                return null;
+              },
+            ),
+          ),
         ],
       ),
     );

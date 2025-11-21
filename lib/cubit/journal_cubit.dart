@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../models/result_model.dart';
@@ -36,6 +37,33 @@ class JournalCubit extends HydratedCubit<JournalState> {
       emit(JournalLoaded(journal));
     }
   }
+  Map<DateTime, ResultModel> getEntriesMap() {
+  if (state is JournalLoaded) {
+    final entries = (state as JournalLoaded).journalList;
+        final entriesMap = <DateTime, ResultModel>{};
+    
+    // Loop through all entries
+    for (var entry in entries) {
+      // Convert date to just date (no time)
+      final dateKey = DateTime(
+        entry.date.year,
+        entry.date.month,
+        entry.date.day,
+      );
+      
+      // Add to map
+      entriesMap[dateKey] = entry;
+
+     debugPrint(
+      'Date: $dateKey, Entry: ${entry.text}, Mood: ${entry.mood}, Score: ${entry.score}, Emoji: ${entry.emoji}, Color: ${entry.color}, Date: ${entry.date}',
+     ); 
+    }
+    
+    return entriesMap;
+  }
+  
+  return {};  // Return empty if no data
+}
 
   getRecentEntries(int count) {
     if (state is JournalLoaded) {
