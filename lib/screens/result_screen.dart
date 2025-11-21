@@ -49,7 +49,7 @@ class ResultScreen extends StatelessWidget {
                       const Gap(20),
 
                       Text(
-                        "Save Entry",
+                        "Entry Saved",
                         style: AppStyle.lemon15sGrey400.copyWith(
                           color: AppColors.myBlack,
                         ),
