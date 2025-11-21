@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../cubit/analyze_cubit.dart';
+import '../../cubit/journal_cubit.dart';
 import '../../service/analyze_repo.dart';
 import '../../service/web_service.dart';
 
@@ -12,6 +13,7 @@ void setup() {
   getIt.registerFactory<AnalyzeCubit>(
     () => AnalyzeCubit(webService: getIt<WebService>()),
   );
+  getIt.registerFactory<JournalCubit>(() => JournalCubit());
 }
 
 Dio setupDio() {
