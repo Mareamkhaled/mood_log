@@ -73,6 +73,13 @@ class JournalCubit extends HydratedCubit<JournalState> {
     }
     return [];
   }
+  List<ResultModel> getAllEntries() {
+    if (state is JournalLoaded) {
+      final entries = (state as JournalLoaded).journalList;
+      return entries;
+    }
+    return [];
+  }
 
   int calcStreakDays() {
     if (state is! JournalLoaded) return 0;

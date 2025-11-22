@@ -6,7 +6,4 @@ part 'env.g.dart';
 abstract class Env {
   @EnviedField(varName: 'MOODLENS_LITE_KEY')
   static final String apiKey = _Env.apiKey;
-
-  @EnviedField(varName: 'BASE_URL')
-  static final String baseUrl = _Env.baseUrl;
 }

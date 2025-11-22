@@ -19,10 +19,10 @@ void setup() {
 
 Dio setupDio() {
   final dio = Dio(
-    BaseOptions(baseUrl: Env.baseUrl),
+    BaseOptions(baseUrl: "https://router.huggingface.co/hf-inference/models/"),
   );
   dio.options.headers = {
-    "Authorization": Env.apiKey,
+    "Authorization": "Bearer ${Env.apiKey}",
     "Content-Type": "application/json",
   };
   dio.interceptors.add(
