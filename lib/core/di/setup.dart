@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../cubit/analyze_cubit.dart';
 import '../../cubit/journal_cubit.dart';
+import '../../env.dart';
 import '../../service/analyze_repo.dart';
 import '../../service/web_service.dart';
 
@@ -18,10 +19,10 @@ void setup() {
 
 Dio setupDio() {
   final dio = Dio(
-    BaseOptions(baseUrl: 'https://router.huggingface.co/hf-inference/models/'),
+    BaseOptions(baseUrl: Env.baseUrl),
   );
   dio.options.headers = {
-    "Authorization": "Bearer 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",
+    "Authorization": Env.apiKey,
     "Content-Type": "application/json",
   };
   dio.interceptors.add(

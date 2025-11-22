@@ -78,7 +78,6 @@ class _CustomCalenderState extends State<CustomCalender> {
                 final entry = entriesMap.entries
                     .firstWhereOrNull((e) => isSameDay(e.key, day))
                     ?.value;
-
                 if (entry != null) {
                   return Container(
                     decoration: BoxDecoration(
