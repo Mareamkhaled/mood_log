@@ -1,14 +1,10 @@
-import 'dart:developer';
-
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../core/utils/app_style.dart';
-import '../cubit/journal_cubit.dart';
-import '../models/result_model.dart';
+
 import '../screens/analytics_screen.dart';
+import 'build_mood_cell.dart';
 import 'custom_container.dart';
 
 class CustomCalender extends StatefulWidget {
@@ -24,50 +20,6 @@ class _CustomCalenderState extends State<CustomCalender> {
   DateTime? _selectedDay;
   @override
   Widget build(BuildContext context) {
-
- 
-
-    List list = [];
-    var entries = context.read<JournalCubit>().getAllEntries();
-    for (var entry in entries) {
-       var getMonth =DateTime.parse(entry.date.toString()).month;
-    list.add(getMonth);
-    }
-
-    getMoodCounts(){
-      Map<String, int> moodCounts = {};
-      for (var entry in entries) {
-        
-        if (moodCounts.containsKey(entry.mood)) {
-          moodCounts[entry.mood] = moodCounts[entry.mood]! + 1;
-        } else {
-          moodCounts[entry.mood] = 1;
-        }
-      }
-
-      return moodCounts;
-    }
-   
-   log(getMoodCounts().toString());
-   calcMoodPercentage(){
-    Map<String, int> moodCounts = getMoodCounts();
-
-    Map<String, double> moodPercentages = {};
-
-    for (var entry in entries) {
-      
-      if (moodCounts.containsKey(entry.mood)) {
-        double percentage = (moodCounts[entry.mood]! / entries.length) * 100;
-        moodPercentages[entry.mood] = percentage;
-      }
-
-    }
-
-    return moodPercentages;
-   }
-
-   log(calcMoodPercentage().toString());
-    
     return CustomContainer(
       child: Column(
         children: [
@@ -117,31 +69,10 @@ class _CustomCalenderState extends State<CustomCalender> {
               return isSameDay(day, _selectedDay);
             },
             calendarBuilders: CalendarBuilders(
-              defaultBuilder: (context, day, focusedDay) {
-                final entriesMap = BlocProvider.of<JournalCubit>(
-                  context,
-                ).getEntriesMap();
-
-                final entry = entriesMap.entries
-                    .firstWhereOrNull((e) => isSameDay(e.key, day))
-                    ?.value;
-                if (entry != null) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: entry.color, width: 2),
-                    ),
-                    child: Center(
-                      child: Text(
-                        entry.emoji,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  );
-                }
-
-                return null;
-              },
+              selectedBuilder: (context, day, focusedDay) =>
+                  buildMoodCell(context, day),
+              defaultBuilder: (context, day, focusedDay) =>
+                  buildMoodCell(context, day),
             ),
           ),
         ],
