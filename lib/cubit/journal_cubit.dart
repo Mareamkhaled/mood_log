@@ -73,6 +73,7 @@ class JournalCubit extends HydratedCubit<JournalState> {
     }
     return [];
   }
+
   List<ResultModel> getAllEntries() {
     if (state is JournalLoaded) {
       final entries = (state as JournalLoaded).journalList;
@@ -81,6 +82,98 @@ class JournalCubit extends HydratedCubit<JournalState> {
     return [];
   }
 
+  // In journal_cubit.dart
+  //!
+  List<ResultModel> getEntriesForCurrentMonth() {
+    if (state is! JournalLoaded) return [];
+
+    final entries = (state as JournalLoaded).journalList;
+    final now = DateTime.now();
+
+    // Filter entries from current month only
+    final thisMonthEntries = entries.where((entry) {
+      return entry.date.year == now.year && entry.date.month == now.month;
+    }).toList();
+    return thisMonthEntries;
+  }
+
+  Map<String, dynamic> getDominantMoodForCurrentMonth() {
+    final thisMonthEntries = getEntriesForCurrentMonth();
+
+    if (thisMonthEntries.isEmpty) {
+      return {'mood': 'None', 'percentage': 0};
+    }
+
+    final counts = <String, int>{};
+
+    for (var entry in thisMonthEntries) {
+      counts[entry.mood] = (counts[entry.mood] ?? 0) + 1;
+    }
+// counts  {joy: 2, none: 1, anger: 1, surprise: 1, sadness: 1}
+    final percentages = <String, int>{};
+    counts.forEach((mood, count) {
+      final percentage = ((count / thisMonthEntries.length) * 100).toInt();
+      percentages[mood] = percentage;
+    });
+    //percentages {joy: 33, none: 16, anger: 16, surprise: 16, sadness: 16}
+    // if (percentages.isEmpty) {
+    //   return {'mood': 'None', 'percentage': 0};
+    // }
+    String dominantMood = percentages.keys.first;
+    int highestPercentage = percentages[dominantMood] ?? 0;
+
+    for (var entry in percentages.entries) {
+      if (entry.value > highestPercentage) {
+        highestPercentage = entry.value;
+        dominantMood = entry.key;
+      }
+    }
+
+    final matchedEntry = thisMonthEntries.firstWhere(
+      (entry) => entry.mood == dominantMood,
+      orElse: () => thisMonthEntries.first,
+    );
+
+    final emoji = matchedEntry.emoji;
+
+   final color = matchedEntry.color;
+
+
+    return {
+      'mood': dominantMood,
+      'percentage': highestPercentage,
+      'emoji': emoji,
+      'color': color,      
+    };
+  }
+  List<Map<String, dynamic>> getMoodSlicesForCurrentMonth() {
+  final entries = getEntriesForCurrentMonth();
+  if (entries.isEmpty) return [];
+
+  final counts = <String, int>{};
+  final moodMeta = <String, Map<String, dynamic>>{};
+
+  for (var entry in entries) {
+    final mood = entry.mood;
+    counts[mood] = (counts[mood] ?? 0) + 1;
+    moodMeta[mood] ??= {
+      'emoji': entry.emoji,
+      'color': entry.color,
+    };
+  }
+  final total = entries.length;
+
+  return counts.entries.map((e) {
+    final mood = e.key;
+    final percentage = ((e.value / total) * 100).toInt();
+    return {
+      'mood': mood,
+      'percentage': percentage,
+      'emoji': moodMeta[mood]?['emoji'] ?? '',
+      'color': moodMeta[mood]?['color'],
+    };
+  }).toList();
+}
   int calcStreakDays() {
     if (state is! JournalLoaded) return 0;
 

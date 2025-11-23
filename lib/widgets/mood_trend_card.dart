@@ -1,12 +1,19 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../core/utils/app_colors.dart';
 import '../core/utils/app_style.dart';
+import '../cubit/journal_cubit.dart';
 import 'cutom_shadow.dart';
 
-Widget buildMoodTrendCard() {
+class MoodTrendCard extends StatelessWidget {
+  const MoodTrendCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var entries = context.read<JournalCubit>().getMoodSlicesForCurrentMonth();
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -86,10 +93,10 @@ Widget buildMoodTrendCard() {
                       interval: 1,
                       reservedSize: 40,
                       getTitlesWidget: (value, meta) {
-                        const moods = ['😢', '😐', '😊'];
-                        if (value >= 0 && value < moods.length) {
+                        // const moods = ['😢', '😐', '😊'];
+                        if (value >= 0 && value < entries.length) {
                           return Text(
-                            moods[value.toInt()],
+                            entries[value.toInt()]['emoji'],
                             style: const TextStyle(fontSize: 20),
                           );
                         }
@@ -136,3 +143,4 @@ Widget buildMoodTrendCard() {
       ),
     );
   }
+}

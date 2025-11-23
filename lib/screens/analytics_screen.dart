@@ -6,7 +6,6 @@ import '../widgets/dominant_mood_card.dart';
 import '../widgets/gradient_decoration.dart';
 import '../widgets/insights_card.dart';
 import '../widgets/mood_distribution_card.dart';
-import '../widgets/mood_trend_card.dart';
 
 class AnalyticsScreen extends StatelessWidget {
   const AnalyticsScreen({super.key});
@@ -57,16 +56,15 @@ class AnalyticsScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       const Gap(10),
-                      buildDominantMoodCard(),
+                      const DominantMoodCard(),
 
                       const Gap(20),
 
-                      buildMoodDistributionCard(),
+                      const MoodDistributionCard(),
 
-                      const Gap(20),
+                      // const Gap(20),
 
-                      buildMoodTrendCard(),
-
+                      // const MoodTrendCard(),
                       const Gap(20),
 
                       buildInsightsCard(),

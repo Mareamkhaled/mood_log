@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AnalyzeCubit>()),
         BlocProvider(create: (context) => getIt<JournalCubit>()),
       ],
-      // create: (context) => getIt<AnalyzeCubit>(),
       child:  MaterialApp(
         debugShowCheckedModeBanner: false,
         locale: DevicePreview.locale(context),
