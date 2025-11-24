@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               children: [
                 Gap(MediaQuery.of(context).padding.top + 5),
-                homeAppBar(),
+                homeAppBar(context),
                 const CurrentStreak(),
                 const Gap(20),
                 const CustomCalender(),
@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-    
+
       floatingActionButton: const CustomFloatingButton(),
     );
   }

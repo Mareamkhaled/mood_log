@@ -90,8 +90,6 @@ class JournalCubit extends HydratedCubit<JournalState> {
     return [];
   }
 
-  // In journal_cubit.dart
-  //!
   List<ResultModel> getEntriesForCurrentMonth() {
     if (state is! JournalLoaded) return [];
 
