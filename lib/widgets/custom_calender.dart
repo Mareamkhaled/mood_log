@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../core/utils/app_style.dart';
 
+import '../cubit/journal_cubit.dart';
 import '../screens/analytics_screen.dart';
 import 'build_mood_cell.dart';
 import 'custom_container.dart';
@@ -45,35 +47,40 @@ class _CustomCalenderState extends State<CustomCalender> {
             ],
           ),
 
-          TableCalendar(
-            firstDay: DateTime.utc(2020, 1, 1),
-            lastDay: DateTime.utc(2030, 12, 31),
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-              });
-            },
+          BlocBuilder<JournalCubit, JournalState>(
+            builder: (context, state) {
+              if (state is JournalLoaded) {
+                return TableCalendar(
+                  firstDay: DateTime.utc(2020, 1, 1),
+                  lastDay: DateTime.utc(2030, 12, 31),
+                  focusedDay: _focusedDay,
+                  calendarFormat: _calendarFormat,
+                  onFormatChanged: (format) {
+                    setState(() {
+                      _calendarFormat = format;
+                    });
+                  },
+                  onPageChanged: (focusedDay) {
+                    _focusedDay = focusedDay;
+                  },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay = focusedDay;
+                    });
+                  },
+                  selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+                  calendarBuilders: CalendarBuilders(
+                    selectedBuilder: (context, day, focusedDay) =>
+                        buildMoodCell(context, day),
+                    defaultBuilder: (context, day, focusedDay) =>
+                        buildMoodCell(context, day),
+                  ),
+                );
+              }
+               return const SizedBox.shrink();
 
-            selectedDayPredicate: (day) {
-              return isSameDay(day, _selectedDay);
             },
-            calendarBuilders: CalendarBuilders(
-              selectedBuilder: (context, day, focusedDay) =>
-                  buildMoodCell(context, day),
-              defaultBuilder: (context, day, focusedDay) =>
-                  buildMoodCell(context, day),
-            ),
           ),
         ],
       ),

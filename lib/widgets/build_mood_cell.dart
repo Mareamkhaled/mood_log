@@ -27,5 +27,5 @@ Widget? buildMoodCell(BuildContext context, DateTime day) {
     );
   }
 
-  return null; // ✅ Let TableCalendar render the day normally
+  return null;
 }

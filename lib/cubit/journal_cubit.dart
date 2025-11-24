@@ -46,6 +46,14 @@ class JournalCubit extends HydratedCubit<JournalState> {
           entry.date.month,
           entry.date.day,
         );
+        if (entriesMap.containsKey(dateKey)) {
+          final existing = entriesMap[dateKey]!;
+          if (entry.date.isAfter(existing.date)) {
+            entriesMap[dateKey] = entry;
+          }
+        } else {
+          entriesMap[dateKey] = entry;
+        }
 
         entriesMap[dateKey] = entry;
       }
@@ -109,7 +117,7 @@ class JournalCubit extends HydratedCubit<JournalState> {
     for (var entry in thisMonthEntries) {
       counts[entry.mood] = (counts[entry.mood] ?? 0) + 1;
     }
-// counts  {joy: 2, none: 1, anger: 1, surprise: 1, sadness: 1}
+    // counts  {joy: 2, none: 1, anger: 1, surprise: 1, sadness: 1}
     final percentages = <String, int>{};
     counts.forEach((mood, count) {
       final percentage = ((count / thisMonthEntries.length) * 100).toInt();
@@ -136,44 +144,42 @@ class JournalCubit extends HydratedCubit<JournalState> {
 
     final emoji = matchedEntry.emoji;
 
-   final color = matchedEntry.color;
-
+    final color = matchedEntry.color;
 
     return {
       'mood': dominantMood,
       'percentage': highestPercentage,
       'emoji': emoji,
-      'color': color,      
+      'color': color,
     };
   }
+
   List<Map<String, dynamic>> getMoodSlicesForCurrentMonth() {
-  final entries = getEntriesForCurrentMonth();
-  if (entries.isEmpty) return [];
+    final entries = getEntriesForCurrentMonth();
+    if (entries.isEmpty) return [];
 
-  final counts = <String, int>{};
-  final moodMeta = <String, Map<String, dynamic>>{};
+    final counts = <String, int>{};
+    final moodMeta = <String, Map<String, dynamic>>{};
 
-  for (var entry in entries) {
-    final mood = entry.mood;
-    counts[mood] = (counts[mood] ?? 0) + 1;
-    moodMeta[mood] ??= {
-      'emoji': entry.emoji,
-      'color': entry.color,
-    };
+    for (var entry in entries) {
+      final mood = entry.mood;
+      counts[mood] = (counts[mood] ?? 0) + 1;
+      moodMeta[mood] ??= {'emoji': entry.emoji, 'color': entry.color};
+    }
+    final total = entries.length;
+
+    return counts.entries.map((e) {
+      final mood = e.key;
+      final percentage = ((e.value / total) * 100).toInt();
+      return {
+        'mood': mood,
+        'percentage': percentage,
+        'emoji': moodMeta[mood]?['emoji'] ?? '',
+        'color': moodMeta[mood]?['color'],
+      };
+    }).toList();
   }
-  final total = entries.length;
 
-  return counts.entries.map((e) {
-    final mood = e.key;
-    final percentage = ((e.value / total) * 100).toInt();
-    return {
-      'mood': mood,
-      'percentage': percentage,
-      'emoji': moodMeta[mood]?['emoji'] ?? '',
-      'color': moodMeta[mood]?['color'],
-    };
-  }).toList();
-}
   int calcStreakDays() {
     if (state is! JournalLoaded) return 0;
 
