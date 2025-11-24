@@ -14,7 +14,6 @@ class CustomFloatingButton extends StatelessWidget {
        context,
         MaterialPageRoute(builder: (context) => const WriteEntryScreen()),
       );
-      debugPrint('New Entry button pressed');
     },
     backgroundColor: AppColors.myLightPurple,
     child: const Icon(Icons.add, color: Colors.white),

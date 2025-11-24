@@ -123,10 +123,6 @@ class JournalCubit extends HydratedCubit<JournalState> {
       final percentage = ((count / thisMonthEntries.length) * 100).toInt();
       percentages[mood] = percentage;
     });
-    //percentages {joy: 33, none: 16, anger: 16, surprise: 16, sadness: 16}
-    // if (percentages.isEmpty) {
-    //   return {'mood': 'None', 'percentage': 0};
-    // }
     String dominantMood = percentages.keys.first;
     int highestPercentage = percentages[dominantMood] ?? 0;
 
