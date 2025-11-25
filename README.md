@@ -67,8 +67,12 @@ Architecture Pattern: BLoC (Business Logic Component)
 
 ✅ Mood Distribution Chart - Pie chart showing emotion breakdown for current month
 
-✅ Dominant Mood Card - Highlights most frequent emotion with percentage
+✅ Dominant Mood Card - Highlights most frequent emotion with percentage.
 
-✅ Mood Trend Analysis - 30-day line chart visualization
+# Demo Video
+
+https://github.com/user-attachments/assets/ca4b1a16-7d53-4fd1-afde-4054d2b26ab4
+
+
 
 
