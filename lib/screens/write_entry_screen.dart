@@ -9,7 +9,6 @@ import '../widgets/mood_journal_input_section.dart';
 
 class WriteEntryScreen extends StatelessWidget {
   const WriteEntryScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
    
